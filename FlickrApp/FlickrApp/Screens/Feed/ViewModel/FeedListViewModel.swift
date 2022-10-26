@@ -69,6 +69,11 @@ final class FeedListViewModel {
         let userReference = Firestore.firestore().collection("users").document(currentUser.uid)
         userReference.updateData(["saved":FieldValue.arrayRemove([photo.urlC])])
     }
+    
+    
+    func fetchLikes() {
+        
+    }
   
     
     func coinForIndexPath(_ indexPath: IndexPath) -> Photo? {

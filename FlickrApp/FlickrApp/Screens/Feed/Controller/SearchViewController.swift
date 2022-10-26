@@ -28,8 +28,8 @@ final class SearchViewController: UIViewController{
         view = searchView
         searchView.backgroundColor = .white
         configureCollectionView()
-        viewModel.fetchPhotos()
-        
+      
+        viewModel.fetchSearchTagPhotos(tag: "popular")
         viewModel.changeHandler = { change in
             switch change {
             case .didFetchPhotos:
@@ -39,6 +39,8 @@ final class SearchViewController: UIViewController{
                )
             }
         }
+        
+        searchView.doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
 
         
     }
@@ -46,6 +48,12 @@ final class SearchViewController: UIViewController{
 
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+    
+    @objc func doneButtonDidTapped() {
+        guard let text = searchView.searchTextField.text else {return}
+        print(text)
+        viewModel.fetchSearchTagPhotos(tag: text)
+    }
     func configureCollectionView() {
         searchView.collectionView.delegate = self
         searchView.collectionView.dataSource = self
@@ -57,10 +65,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    
-        
-      
-        
         guard let cell: LikesAndSavedCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: LikesAndSavedCollectionViewCell.identifier, for: indexPath) as? LikesAndSavedCollectionViewCell else {
             return UICollectionViewCell()
         }

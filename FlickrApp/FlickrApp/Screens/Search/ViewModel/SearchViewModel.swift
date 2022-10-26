@@ -26,8 +26,26 @@ final class SearchViewModel {
         photosResponse?.photos.photo.count ?? .zero
     }
     
-    func fetchPhotos() {
-        provider.request(.search) { result in
+    func fetchSearchTagPhotos(tag: String) {
+        provider.request(.search(tag: tag)) { result in
+            switch result {
+            case .failure(let error):
+                self.changeHandler?(.didErrorOccurred(error))
+            case .success(let response):
+                do {
+                  
+                    let photoResponse = try JSONDecoder().decode(PhotoResponse.self, from: response.data)
+                    self.photosResponse = photoResponse
+                    
+                } catch {
+                    self.changeHandler?(.didErrorOccurred(error))
+                }
+            }
+        }
+    }
+    
+    func fetchPopularPhotos() {
+        provider.request(.getPopularPhotos) { result in
             switch result {
             case .failure(let error):
                 self.changeHandler?(.didErrorOccurred(error))

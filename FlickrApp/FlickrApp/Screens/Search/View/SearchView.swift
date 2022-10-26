@@ -38,7 +38,7 @@ final class SearchView: UIView {
         return imageView
     }()
     
-    private lazy var doneButton: UIButton = {
+    lazy var doneButton: UIButton = {
        let button = UIButton()
         button.setTitle("Done", for: .normal)
         button.setTitleColor(.black, for: .normal)

@@ -96,7 +96,7 @@ extension FeedListViewController: FeedListTableViewCellDelegate{
             cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down.fill"), for: .normal)
             cell.saveButton.tintColor = .red
             viewModel.addSaved(with: photo)
-            
+
         } else {
             cell.saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
             cell.saveButton.tintColor = .black
@@ -107,12 +107,12 @@ extension FeedListViewController: FeedListTableViewCellDelegate{
 
     func feedListTableViewCellFavButton(_ cell: FeedListTableViewCell, didTapAddFavoriteButton button: UIButton) {
         guard let photo = cell.photo else {return}
-        
+
         if button.image(for: .normal) == UIImage(systemName: "heart") {
             cell.heartButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             cell.heartButton.tintColor = .red
             viewModel.addFavorites(with: photo)
-            
+
         } else {
             cell.heartButton.setImage(UIImage(systemName: "heart"), for: .normal)
             cell.heartButton.tintColor = .black

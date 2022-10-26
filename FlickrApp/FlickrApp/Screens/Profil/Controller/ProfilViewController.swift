@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Kingfisher
+import FirebaseAuth
 
 final class ProfilViewController: UIViewController {
     
@@ -56,7 +57,14 @@ final class ProfilViewController: UIViewController {
         navigationItem.title = "Profil"
         setupCollectionView()
         profilView.segmentedControl.addTarget(self, action: #selector(didValueChangedSegmentedControl), for: .valueChanged)
+        
+        let logoutButton = UIBarButtonItem(customView: profilView.logoutButton)
+        profilView.logoutButton.addTarget(self, action: #selector(logoutButtonDidTapped), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = logoutButton
        
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         
     }
     
@@ -67,6 +75,15 @@ final class ProfilViewController: UIViewController {
         } else {
             fetchType = FetchType(text: "saved")
         }
+    }
+    
+    @objc func logoutButtonDidTapped() {
+        
+        try! Auth.auth().signOut()
+        let authViewModel = AuthViewModel()
+        navigationController?.pushViewController(AuthViewController(viewModel: authViewModel), animated: true)
+        navigationController?.tabBarController?.tabBar.isHidden = true
+
     }
 }
 

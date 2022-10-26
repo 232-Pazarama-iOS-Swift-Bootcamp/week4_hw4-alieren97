@@ -7,12 +7,35 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 final class ProfilView: UIView {
     
+    lazy var logoutButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        button.setTitle("Logout", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 20
+        button.backgroundColor = .white
+        button.tintColor = .black
+        return button
+    }()
+    
+    
+    private lazy var profilImageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "person.circle")
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .black
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    
     private lazy var usernameLabel: UILabel = {
        let label = UILabel()
-        label.text = "ali"
+        label.text = "Ali Eren"
         return label
     }()
     
@@ -49,15 +72,22 @@ final class ProfilView: UIView {
     }
     
     private func setupViews() {
+        addSubview(profilImageView)
         addSubview(usernameLabel)
         addSubview(segmentedControl)
         addSubview(collectionView)
     }
     
     private func setupLayouts() {
-        usernameLabel.snp.makeConstraints { make in
+        profilImageView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(100)
-            make.leading.trailing.equalToSuperview().inset(50)
+            make.leading.equalToSuperview().inset(50)
+            make.width.height.equalTo(100)
+        }
+        
+        usernameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(130)
+            make.leading.equalTo(profilImageView.snp.trailing).offset(30)
             make.height.equalTo(50)
         }
         
