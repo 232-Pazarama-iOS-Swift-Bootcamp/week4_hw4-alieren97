@@ -72,12 +72,8 @@ final class AuthViewController: UIViewController {
                              password: password,
                              completion: { [weak self] in
                 guard let self = self else { return }
-                let searchViewController = SearchViewController()
-                let feedViewModel = FeedListViewModel()
-                let feedViewController = FeedListViewController(viewModel: feedViewModel)
-                
-                let tabBarController = UITabBarController()
-                tabBarController.viewControllers = [feedViewController, searchViewController]
+                let tabBarController = MainTabController()
+                self.navigationController?.navigationBar.isHidden = true
                 self.navigationController?.pushViewController(tabBarController, animated: true)
             })
         case .signUp:

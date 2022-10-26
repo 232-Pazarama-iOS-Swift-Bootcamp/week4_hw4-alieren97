@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 enum AuthViewModelChange {
     case didErrorOccurred(_ error: Error)
@@ -23,6 +24,8 @@ final class AuthViewModel {
                 self.changeHandler?(.didErrorOccurred(error))
                 return
             }
+            guard let userId = authResult?.user.uid else { return }
+            Firestore.firestore().collection("users").document(userId).setData(["uid":userId,"email":email])
             self.changeHandler?(.didSignUpSuccessful)
         }
     }
@@ -35,6 +38,7 @@ final class AuthViewModel {
                 self.changeHandler?(.didErrorOccurred(error))
                 return
             }
+           
             completion()
         }
     }

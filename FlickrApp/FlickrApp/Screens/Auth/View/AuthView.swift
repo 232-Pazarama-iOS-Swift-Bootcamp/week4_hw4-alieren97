@@ -33,7 +33,7 @@ final class AuthView: UIView {
     lazy var emailTextField: UITextField = {
        let textField = UITextField()
         textField.placeholder = "Email"
-        textField.text = "alierensh3@gmail.com"
+        textField.text = "alierensh8@gmail.com"
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
         return textField

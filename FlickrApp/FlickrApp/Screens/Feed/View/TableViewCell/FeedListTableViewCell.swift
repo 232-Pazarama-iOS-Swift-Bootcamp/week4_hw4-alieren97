@@ -9,8 +9,16 @@ import Foundation
 import UIKit
 import SnapKit
 
+protocol FeedListTableViewCellDelegate: AnyObject{
+    func feedListTableViewCellFavButton(_ cell: FeedListTableViewCell, didTapAddFavoriteButton button: UIButton)
+    func feedListTableViewCellSaveButton(_ cell: FeedListTableViewCell, didTapSaveButton button: UIButton)
+}
+
 final class FeedListTableViewCell :UITableViewCell {
     static let identifier = "FeedListTableViewCell"
+    
+    weak var delegate: FeedListTableViewCellDelegate?
+    var photo: Photo?
     
     private lazy var usernameLabel: UILabel = {
        let label = UILabel()
@@ -25,19 +33,24 @@ final class FeedListTableViewCell :UITableViewCell {
         return imageView
     }()
     
-    private lazy var heartButton: UIButton = {
+    lazy var heartButton: UIButton = {
        let button = UIButton()
         button.setImage(UIImage(systemName: "heart"), for: .normal)
+        button.addTarget(self, action: #selector(didTapAddFavoriteButton(_:)), for: .touchUpInside)
+
         button.tintColor = .black
         button.contentMode = .scaleAspectFit
         return button
     }()
    
-    private lazy var saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
        let button = UIButton()
         button.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+
         button.tintColor = .black
         button.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(didTapSaveButton(_:)), for: .touchUpInside)
+        
         return button
     }()
     
@@ -69,7 +82,6 @@ final class FeedListTableViewCell :UITableViewCell {
         
         feedImageView.snp.makeConstraints { make in
             make.top.equalTo(usernameLabel.snp.bottom).offset(20)
-            
             make.height.equalTo(300)
             make.width.equalTo(300)
             make.centerX.equalToSuperview()
@@ -84,16 +96,24 @@ final class FeedListTableViewCell :UITableViewCell {
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(feedImageView.snp.bottom).offset(10)
             make.trailing.equalToSuperview().inset(20)
-            
             make.width.height.equalTo(40)
         }
     }
+
 }
 
 extension FeedListTableViewCell {
     func configureCell(photo:Photo) {
+        self.photo = photo
         usernameLabel.text = photo.owner
-        
-        
+    }
+    
+    @objc
+    private func didTapAddFavoriteButton(_ sender: UIButton) {
+        delegate?.feedListTableViewCellFavButton(self, didTapAddFavoriteButton: sender)
+    }
+    
+    @objc private func didTapSaveButton(_ sender: UIButton) {
+        delegate?.feedListTableViewCellSaveButton(self, didTapSaveButton: sender)
     }
 }
